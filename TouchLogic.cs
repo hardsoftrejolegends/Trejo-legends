@@ -1,3 +1,9 @@
+/*/
+ * Script by Devin Curry
+ * www.Devination.com
+ * www.youtube.com/user/curryboy001
+ * Please like and subscribe if you found my tutorials helpful :D
+/*/
 using UnityEngine;
 using System.Collections;
  
