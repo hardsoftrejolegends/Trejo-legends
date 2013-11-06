@@ -1,19 +1,35 @@
+//////////////////////////////////////////////////////////////
+// Joystick.js
+// Penelope iPhone Tutorial
+//
+// Joystick creates a movable joystick (via GUITexture) that 
+// handles touch input, taps, and phases. Dead zones can control
+// where the joystick input gets picked up and can be normalized.
+//
+// Optionally, you can enable the touchPad property from the editor
+// to treat this Joystick as a TouchPad. A TouchPad allows the finger
+// to touch down at any point and it tracks the movement relatively 
+// without moving the graphic
+//////////////////////////////////////////////////////////////
+
 #pragma strict
 
 @script RequireComponent( GUITexture )
 
 // A simple class for bounding how far the GUITexture will move
-class Boundary 
+class Boundary
 {
 	var min : Vector2 = Vector2.zero;
 	var max : Vector2 = Vector2.zero;
 }
 
-static private var joysticks : Joystick[];					// A static collection of all joysticks
-static private var enumeratedJoysticks : boolean = false;
-static private var tapTimeDelta : float = 0.3;				// Time allowed between taps
 
-var touchPad : boolean; 									// Is this a TouchPad?
+
+//static private var joysticks : Joystick[];					// A static collection of all joysticks
+//static private var enumeratedJoysticks : boolean = false;
+static private var tapTimeDelta : float = 1;				// Time allowed between taps
+
+//var touchPad : boolean; 									// Is this a TouchPad?
 var touchZone : Rect;
 var deadZone : Vector2 = Vector2.zero;						// Control when position is output
 var normalize : boolean = false; 							// Normalize output after the dead-zone?
@@ -36,7 +52,8 @@ function Start()
 {
 	// Cache this component at startup instead of looking up every frame	
 	gui = GetComponent( GUITexture );
-	
+	gui.pixelInset.width = Screen.height/6;
+	gui.pixelInset.height = gui.pixelInset.width;
 	// Store the default rect for the gui, so we can snap back to it
 	defaultRect = gui.pixelInset;	
     
@@ -46,35 +63,34 @@ function Start()
     transform.position.x = 0.0;
     transform.position.y = 0.0;
         
-	if ( touchPad )
-	{
-		// If a texture has been assigned, then use the rect ferom the gui as our touchZone
-		if ( gui.texture )
-			touchZone = defaultRect;
-	}
-	else
-	{				
-		// This is an offset for touch input to match with the top left
-		// corner of the GUI
-		guiTouchOffset.x = defaultRect.width * 0.5;
-		guiTouchOffset.y = defaultRect.height * 0.5;
-		
-		// Cache the center of the GUI, since it doesn't change
-		guiCenter.x = defaultRect.x + guiTouchOffset.x;
-		guiCenter.y = defaultRect.y + guiTouchOffset.y;
-		
-		// Let's build the GUI boundary, so we can clamp joystick movement
-		guiBoundary.min.x = defaultRect.x - guiTouchOffset.x;
-		guiBoundary.max.x = defaultRect.x + guiTouchOffset.x;
-		guiBoundary.min.y = defaultRect.y - guiTouchOffset.y;
-		guiBoundary.max.y = defaultRect.y + guiTouchOffset.y;
-	}
+	// This is an offset for touch input to match with the top left
+	// corner of the GUI
+	guiTouchOffset.x = defaultRect.width * 0.5;
+	guiTouchOffset.y = defaultRect.height * 0.5;
+	
+	// Cache the center of the GUI, since it doesn't change
+	guiCenter.x = defaultRect.x + guiTouchOffset.x;
+	guiCenter.y = defaultRect.y + guiTouchOffset.y;
+	
+	// Let's build the GUI boundary, so we can clamp joystick movement
+	guiBoundary.min.x = defaultRect.x - guiTouchOffset.x;
+	guiBoundary.max.x = defaultRect.x + guiTouchOffset.x;
+	guiBoundary.min.y = defaultRect.y - guiTouchOffset.y;
+	guiBoundary.max.y = defaultRect.y + guiTouchOffset.y;
+
+	gui.color.a = 0.25;	
+}
+
+function SetPos() // esta funcion declara la posicion del stick 
+{
+	gui.pixelInset.x = gui.pixelInset.width*3/2 ;
+	gui.pixelInset.y = gui.pixelInset.height*3/2;
 }
 
 function Disable()
 {
-	gameObject.active = false;
-	enumeratedJoysticks = false;
+	gameObject.SetActive(false);
+	
 }
 
 function ResetJoystick()
@@ -85,30 +101,21 @@ function ResetJoystick()
 	position = Vector2.zero;
 	fingerDownPos = Vector2.zero;
 	
-	if ( touchPad )
-		gui.color.a = 0.025;	
+	gui.color.a = 0.25;	
 }
 
 function IsFingerDown() : boolean
 {
 	return (lastFingerId != -1);
 }
-	
-function LatchedFinger( fingerId : int )
+
+function GettapTimeWindow() : float
 {
-	// If another joystick has latched this finger, then we must release it
-	if ( lastFingerId == fingerId )
-		ResetJoystick();
+	return tapTimeWindow; //nos dice cuanto tiempo queda para que el siguiente toque entre en la cuenta
 }
 
 function Update()
 {	
-	if ( !enumeratedJoysticks )
-	{
-		// Collect all joysticks in the game, so we can relay finger latching messages
-		joysticks = FindObjectsOfType( Joystick ) as Joystick[];
-		enumeratedJoysticks = true;
-	}	
 		
 	var count = Input.touchCount;
 	
@@ -128,28 +135,17 @@ function Update()
 			var guiTouchPos : Vector2 = touch.position - guiTouchOffset;
 	
 			var shouldLatchFinger = false;
-			if ( touchPad )
-			{				
-				if ( touchZone.Contains( touch.position ) )
-					shouldLatchFinger = true;
-			}
-			else if ( gui.HitTest( touch.position ) )
+
+			if ( gui.HitTest( touch.position ) )
 			{
 				shouldLatchFinger = true;
 			}		
 	
 			// Latch the finger if this is a new touch
+			//Nuevo toque
 			if ( shouldLatchFinger && ( lastFingerId == -1 || lastFingerId != touch.fingerId ) )
 			{
-				
-				if ( touchPad )
-				{
-					gui.color.a = 0.15;
-					
-					lastFingerId = touch.fingerId;
-					fingerDownPos = touch.position;
-					fingerDownTime = Time.time;
-				}
+				gui.color.a = 0.75;
 				
 				lastFingerId = touch.fingerId;
 				
@@ -161,15 +157,8 @@ function Update()
 					tapCount = 1;
 					tapTimeWindow = tapTimeDelta;
 				}
-											
-				// Tell other joysticks we've latched this finger
-				for ( var j : Joystick in joysticks )
-				{
-					if ( j != this )
-						j.LatchedFinger( touch.fingerId );
-				}						
-			}				
-	
+			}
+			//el joystick sigue presionado
 			if ( lastFingerId == touch.fingerId )
 			{	
 				// Override the tap count with what the iPhone SDK reports if it is greater
@@ -178,32 +167,19 @@ function Update()
 				if ( touch.tapCount > tapCount )
 					tapCount = touch.tapCount;
 				
-				if ( touchPad )
-				{	
-					// For a touchpad, let's just set the position directly based on distance from initial touchdown
-					position.x = Mathf.Clamp( ( touch.position.x - fingerDownPos.x ) / ( touchZone.width / 2 ), -1, 1 );
-					position.y = Mathf.Clamp( ( touch.position.y - fingerDownPos.y ) / ( touchZone.height / 2 ), -1, 1 );
-				}
-				else
-				{					
-					// Change the location of the joystick graphic to match where the touch is
-					gui.pixelInset.x =  Mathf.Clamp( guiTouchPos.x, guiBoundary.min.x, guiBoundary.max.x );
-					gui.pixelInset.y =  Mathf.Clamp( guiTouchPos.y, guiBoundary.min.y, guiBoundary.max.y );		
-				}
+				// Change the location of the joystick graphic to match where the touch is
+				gui.pixelInset.x =  Mathf.Clamp( guiTouchPos.x, guiBoundary.min.x, guiBoundary.max.x );
+				gui.pixelInset.y =  Mathf.Clamp( guiTouchPos.y, guiBoundary.min.y, guiBoundary.max.y );		
 				
 				if ( touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled )
-					ResetJoystick();					
+					ResetJoystick(); //si el joystick se suelta, se resetan los parametros
 			}			
 		}
 	}
-	
-	if ( !touchPad )
-	{
-		// Get a value between -1 and 1 based on the joystick graphic location
-		position.x = ( gui.pixelInset.x + guiTouchOffset.x - guiCenter.x ) / guiTouchOffset.x;
-		position.y = ( gui.pixelInset.y + guiTouchOffset.y - guiCenter.y ) / guiTouchOffset.y;
-	}
-	
+	// Get a value between -1 and 1 based on the joystick graphic location
+	position.x = ( gui.pixelInset.x + guiTouchOffset.x - guiCenter.x ) / guiTouchOffset.x;
+	position.y = ( gui.pixelInset.y + guiTouchOffset.y - guiCenter.y ) / guiTouchOffset.y;
+
 	// Adjust for dead zone	
 	var absoluteX = Mathf.Abs( position.x );
 	var absoluteY = Mathf.Abs( position.y );
