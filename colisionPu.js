@@ -17,9 +17,7 @@ var v20 : Texture2D;
 var v10 : Texture2D;
 
 function Start () {
-v100=GameObject.Find("BarraOponente").guiTexture;
-ko=GameObject.Find("KO").guiTexture;
-ganado=GameObject.Find("Pantalla").guiTexture;
+
 }
 
 function Update () {
@@ -58,9 +56,10 @@ function OnCollisionEnter(collision : Collision) {
 			v100.texture = v10;	
 			}
 		if (globalVar.BarraPu==10){
-		ko.texture = ko2;
+			ko.texture = ko2;
 			yield WaitForSeconds (2);
-			ganado.texture=ganar;	
+			ganado.texture=ganar;
+			globalVar.vidas = globalVar.vidas - 1;
 			yield WaitForSeconds (2);
 			Application.LoadLevel("Scores");
 			}
