@@ -1,4 +1,3 @@
-
 #pragma strict
 
 var plane : Transform;
@@ -34,3 +33,4 @@ function OnPreCull()
 	
 	camera.projectionMatrix = CalculateObliqueMatrix(projection, nearPlane);
 }
+
