@@ -111,3 +111,4 @@ function Update()
 	cameraPivot.Rotate( 0, camRotation.x, 0, Space.World );
 	cameraPivot.Rotate( camRotation.y, 0, 0 );
 }
+
