@@ -17,9 +17,7 @@ var v10 : Texture2D;
 var ko2 : Texture2D;
 
 function Start () {
-v100=GameObject.Find("Barra").guiTexture;
-ko=GameObject.Find("KO").guiTexture;
-perdido=GameObject.Find("Pantalla").guiTexture;
+
 }
 
 function Update () {
@@ -27,7 +25,7 @@ function Update () {
 
 function OnCollisionEnter(collision : Collision) {
 		// Debug-draw all contact points and normals
-		if(collision.gameObject.name == "Trejo1(Clone)"){
+		if(collision.gameObject.name == "Trejo1"){
 		globalVar.BarraT1 = globalVar.BarraT1+1;
 		Debug.Log("hit");
 		if (globalVar.BarraT1==1){
@@ -61,8 +59,9 @@ function OnCollisionEnter(collision : Collision) {
 			ko.texture = ko2;
 			yield WaitForSeconds (2);
 			perdido.texture = perder;
+			globalVar.TrejoVidas = globalVar.TrejoVidas - 1;
 			yield WaitForSeconds (2);
-			Application.LoadLevel("Oponentes");
+			Application.LoadLevel("Main");
 			}
 	}
 }
