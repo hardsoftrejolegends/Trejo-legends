@@ -15,8 +15,7 @@ var v20 : Texture2D;
 var v10 : Texture2D;
 
 function Start () {
-v100=GameObject.Find("BarraOponente").guiTexture;
-ko=GameObject.Find("KO").guiTexture;
+
 }
 
 function Update () {
@@ -24,7 +23,7 @@ function Update () {
 
 function OnCollisionEnter(collision : Collision) {
 		// Debug-draw all contact points and normals
-		if(collision.gameObject.name == "Chihuahua(Clone)"){
+		if(collision.gameObject.name == "Chihuahua"){
 		globalVar.BarraC= globalVar.BarraC+1;
 		Debug.Log("hit");
 		if (globalVar.BarraC==1){
@@ -55,12 +54,10 @@ function OnCollisionEnter(collision : Collision) {
 			v100.texture = v10;	
 			}
 		if (globalVar.BarraC==10){
-		ko.texture = ko2;
-		yield WaitForSeconds (2);
+			ko.texture = ko2;
+			globalVar.vidas = globalVar.vidas - 1;
+			yield WaitForSeconds (2);
 			Application.LoadLevel("Principal");
-			globalVar.T="Trejo3(Clone)";
-			globalVar.Ene="Pato(Clone)";
-			globalVar.flag=false;
 			}
 	}
 }
