@@ -89,3 +89,4 @@ public class AutoFade : MonoBehaviour
         Instance.StartFade(aFadeOutTime, aFadeInTime, aColor);
     }
 }
+
