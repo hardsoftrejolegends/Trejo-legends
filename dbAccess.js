@@ -1,9 +1,3 @@
-/*  Javascript class for accessing SQLite objects.  
-     To use it, you need to make sure you COPY Mono.Data.SQLiteClient.dll from wherever it lives in your Unity directory
-     to your project's Assets folder
-     Originally created by dklompmaker in 2009
-     http://forum.unity3d.com/threads/28500-SQLite-Class-Easier-Database-Stuff    
-     Modified 2011 by Alan Chatham           */
 import          System.Data;  // we import our  data class
 import          Mono.Data.Sqlite; // we import sqlite
  
