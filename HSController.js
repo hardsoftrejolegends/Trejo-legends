@@ -48,6 +48,7 @@ function postScore(name, score) {
  
 // Get the scores from the MySQL DB to display in a GUIText.
 function getScores() {
+	//var words = new Array;
     gameObject.guiText.text = "Loading Scores";
     var hs_get = WWW(highscoreUrl);
     yield hs_get;
