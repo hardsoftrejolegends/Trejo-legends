@@ -32,7 +32,7 @@ function Update () {
 		}
 		if(BtnBP.guiTexture != null && (BtnBP.guiTexture.HitTest(Input.GetTouch(0).position))){
 			if(Input.GetTouch(0).phase == TouchPhase.Began){
-				Application.LoadLevel("Fondo");
+				Application.LoadLevel("Oponentes");
 			}
 		}
 		if(BtnBack.guiTexture != null && (BtnBack.guiTexture.HitTest(Input.GetTouch(0).position))){
