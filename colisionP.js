@@ -15,8 +15,7 @@ var v20 : Texture2D;
 var v10 : Texture2D;
 
 function Start () {
-v100=GameObject.Find("BarraOponente").guiTexture;
-ko=GameObject.Find("KO").guiTexture;
+
 }
 
 function Update () {
@@ -55,12 +54,10 @@ function OnCollisionEnter(collision : Collision) {
 			v100.texture = v10;	
 			}
 		if (globalVar.BarraP==10){
-		ko.texture = ko2;
+			ko.texture = ko2;
 			yield WaitForSeconds (2);
+			globalVar.vidas = globalVar.vidas - 1;
 			Application.LoadLevel("Estadio");
-			globalVar.T="Trejo2(Clone)";
-			globalVar.Ene="Puma(Clone)";
-			globalVar.flag=false;
 			}
 	}
 }
