@@ -68,3 +68,4 @@ function Update()
 	zoomedPosition = defaultLocalPosition + thisTransform.parent.InverseTransformDirection( thisTransform.forward * currentZoom );
 	thisTransform.localPosition = zoomedPosition;
 }
+
