@@ -1,14 +1,3 @@
-//////////////////////////////////////////////////////////////
-// TapControl.js
-// Penelope iPhone Tutorial
-//
-// TapControl handles the control scheme in which Penelope is
-// driven by a single finger. When the player touches the screen,
-// Penelope will move toward the finger. The player can also
-// use two fingers to do pinching and twisting gestures to do
-// camera zooming and rotation. 
-//////////////////////////////////////////////////////////////
-
 #pragma strict
 
 enum ControlState
