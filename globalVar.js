@@ -12,6 +12,31 @@ static var flag =true;
 static var flagServer =false;
 static var flagClient =false;
 
+static var TrejoTiempo = new Date();
+static var TrejoVidas: int;
+static var tiempo = new Date();
+static var vidas: int;
+
+// Fecha en la que perdio...
+static var TrejoDiaInic: int;
+static var TrejoHoraInic: int;
+static var TrejoMinInic: int;
+static var diaInic: int;
+static var horaInic: int;
+static var minInic: int;
+
+// Fecha que se esta comparando para saber si el tiempo de espera se cumplio...
+static var TrejoDiaFin: int;
+static var TrejoHoraFin: int;
+static var TrejoMinFin: int;
+static var diaFin: int;
+static var horaFin: int;
+static var minFin: int;
+
+// Bandera
+static var TrejoPierde: boolean;
+static var pierde: boolean;
+
 function Start () {
 
 }
