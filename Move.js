@@ -24,3 +24,4 @@ if(Input.GetKey(KeyCode.RightArrow)){
 	if(Input.GetKeyDown("h"))
 		animation.CrossFade("THaduken");
 }
+
