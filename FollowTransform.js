@@ -17,3 +17,4 @@ function Update ()
 	if ( faceForward )
 		thisTransform.forward = targetTransform.forward;
 }
+
