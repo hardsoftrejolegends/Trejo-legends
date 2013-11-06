@@ -12,3 +12,4 @@ public class TouchManager : TouchLogic
     obj.touch2Watch--;
  }
 }
+
